@@ -1,2 +1,2 @@
 # linux-scripts
-I store some of linux scripts here for later usesages.
+I store some of linux scripts here for later uses.
