@@ -1,6 +1,7 @@
 cd ~
 sudo apt install git
 sudo apt install vim
+sudo apt install tree
 
 mkdir Github
 cd Github/
