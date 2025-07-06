@@ -1,0 +1,5 @@
+---
+alwaysApply: true
+---
+Before running any terminal commands, please do this first to activate the right env:
+`cd ~/gitrepos/agent-core & conda activate bird & source .venv/bin/activate`

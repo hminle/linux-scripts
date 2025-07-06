@@ -1,0 +1,228 @@
+---
+description: Guidelines for writing effective technical documentation with Mermaid visualizations
+globs:
+alwaysApply: false
+---
+
+# Technical Documentation Writing Standards
+
+## Core Principles
+- **Clarity First**: Write for your audience, not for yourself
+- **Visual Communication**: Use Mermaid diagrams to illustrate complex concepts
+- **Progressive Disclosure**: Start with high-level concepts, then drill down
+- **Actionable Content**: Include concrete examples and step-by-step instructions
+- **Maintenance**: Keep documentation current with code changes
+
+## Documentation Structure
+
+### 1. Executive Summary
+- Brief overview of what the system/feature does
+- Key benefits and use cases
+- Target audience identification
+
+### 2. Architecture Overview
+- High-level system diagram (use Mermaid)
+- Component relationships
+- Data flow visualization
+- Integration points
+
+### 3. Detailed Specifications
+- API documentation with examples
+- Configuration options
+- Environment requirements
+- Dependencies and prerequisites
+- Environment setup using uv as package manager
+
+### 4. Implementation Guides
+- Step-by-step setup instructions
+- Code examples with explanations
+- Common patterns and best practices
+- Troubleshooting guides
+
+## Mermaid Visualization Guidelines
+
+### When to Use Mermaid Diagrams
+- **System Architecture**: Show component relationships
+- **Data Flow**: Illustrate how data moves through the system
+- **Process Flow**: Document workflows and business logic
+- **State Machines**: Show state transitions and conditions
+- **Database Schemas**: Entity relationships and structure
+- **API Interactions**: Sequence diagrams for API calls
+- **Decision Trees**: Complex conditional logic
+
+### Mermaid Best Practices
+
+#### Common Diagram Types with Examples
+```mermaid
+flowchart TD
+    A[Start] --> B{Decision}
+    B -->|Yes| C[Action]
+    B -->|No| D[Alternative]
+```
+
+```mermaid
+sequenceDiagram
+    Client->>API: Request
+    API->>Database: Query
+    Database-->>API: Response
+    API-->>Client: Result
+```
+
+### Diagram Guidelines
+- **Keep it Simple**: One concept per diagram
+- **Use Consistent Styling**: Maintain visual consistency across diagrams
+- **Label Everything**: Clear, descriptive labels for all elements
+- **Color Coding**: Use colors to group related elements
+- **Proper Sizing**: Ensure diagrams are readable at different screen sizes
+
+## Source Code Citations
+
+### 1. Referencing Implementation
+- **Always link documentation to source code**: Help readers find the actual implementation
+- **Use consistent citation format**: Maintain uniform referencing across all documentation
+- **Include line numbers when helpful**: Point to specific implementations, not just files
+- **Update citations during refactoring**: Keep references current with code changes
+
+### 2. Citation Format Standards
+```markdown
+**Feature Name**: Implemented in `src/services/user_service.py` at lines 45-67
+**API Endpoint**: Handler defined in `api/handlers/auth.py` at line 123
+**Database Model**: Schema in `models/user.py` at lines 15-32
+**Configuration**: Settings in `config/database.yml` at lines 8-15
+```
+
+### 3. Citation Best Practices
+- **Cite key implementations**: Focus on main logic, not every utility function
+- **Link to entry points**: Reference the main function/class that implements the feature
+- **Include test files**: Reference corresponding test files for complex features
+- **Use relative paths**: Consistent path format from project root
+- **Group related citations**: Organize multiple file references logically
+
+### 4. Citation Examples
+
+```markdown
+## Feature Name
+
+**Implementation**: `src/services/feature_service.py` at lines 45-67
+**API Routes**: `api/routes/feature.py` at lines 25-78
+**Tests**: `tests/feature/test_feature_service.py`
+```
+
+### 5. Code Reference Integration with Mermaid
+```mermaid
+flowchart TD
+    A[User Registration Request] --> B[UserHandler.create_user]
+    B --> C[UserValidator.validate]
+    C --> D[UserService.create]
+    D --> E[Database.save]
+    
+    B -.->|Implementation| F["`api/handlers/user_handler.py:45-78`"]
+    C -.->|Implementation| G["`validators/user_validator.py:23-34`"]
+    D -.->|Implementation| H["`services/user_service.py:67-89`"]
+```
+
+### 6. Maintenance Guidelines
+- **Automated checks**: Use tools to verify file paths and line numbers
+- **Version control integration**: Update citations with code changes
+- **Documentation reviews**: Verify citations during code reviews
+- **Link validation**: Regular checks for broken or outdated references
+
+## Code Documentation Standards
+
+### 1. Inline Documentation
+- Use clear, descriptive docstrings for all functions and classes
+- Include parameter types, return values, and exceptions
+- Provide usage examples for complex functions
+
+### 2. API Documentation Format
+- Include request/response examples
+- Document all error codes and responses
+- Provide clear parameter descriptions
+
+## Writing Style Guidelines
+
+### 1. Voice and Tone
+- **Active Voice**: "The system processes requests" vs "Requests are processed"
+- **Present Tense**: "The function returns" vs "The function will return"
+- **Imperative for Instructions**: "Run the command" vs "You should run the command"
+
+### 2. Language Standards
+- **Concise**: Remove unnecessary words
+- **Precise**: Use specific technical terms
+- **Consistent**: Maintain terminology throughout
+- **Accessible**: Define acronyms and technical terms
+
+### 3. Formatting Standards
+- **Headers**: Use hierarchical structure (H1, H2, H3)
+- **Lists**: Use bullet points for unordered items, numbers for steps
+- **Code Blocks**: Syntax highlighting for all code examples
+- **Links**: Descriptive link text, not "click here"
+
+## Content Organization
+
+### 1. Information Architecture
+- Organize content hierarchically (Overview → Architecture → Implementation → Reference)
+- Use clear section headers and navigation
+- Group related topics together
+
+### 2. Cross-References
+- Link related concepts
+- Maintain bidirectional references
+- Use consistent linking patterns
+- Include "See also" sections
+
+### 3. Version Control
+- Document version history
+- Mark deprecated features
+- Maintain backward compatibility notes
+- Include migration guides
+
+## Quality Assurance
+
+### 1. Review Checklist
+- [ ] All diagrams render correctly
+- [ ] Code examples are tested and working
+- [ ] Links are functional
+- [ ] Grammar and spelling checked
+- [ ] Consistent terminology used
+- [ ] Audience-appropriate level of detail
+
+### 2. Accessibility
+- Alt text for all images and diagrams
+- Proper heading hierarchy
+- Color contrast compliance
+- Screen reader compatibility
+
+### 3. Maintenance
+- Regular review schedule
+- Automated link checking
+- Code example validation
+- User feedback integration
+
+## Documentation Templates
+
+### Basic Structure
+```markdown
+# Feature/System Name
+
+## Overview
+Brief description and purpose.
+
+## Architecture
+[Include relevant Mermaid diagram]
+
+## Implementation
+**Core Logic**: `src/feature/service.py` at lines 45-67
+**API Routes**: `api/routes/feature.py` at lines 25-78
+**Tests**: `tests/feature/test_service.py`
+
+## Usage Examples
+[Practical examples and code snippets]
+```
+
+## Continuous Improvement
+- Gather user feedback regularly
+- Monitor documentation usage analytics
+- Update based on support ticket patterns
+- Conduct periodic content audits
+- Maintain documentation roadmap aligned with product development

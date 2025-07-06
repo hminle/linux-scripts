@@ -1,0 +1,147 @@
+---
+description: Workspace and Package Management with UV for Python project
+alwaysApply: false
+---
+# Package Management with `uv` - Monorepo Edition
+
+These rules define strict guidelines for managing Python dependencies in this monorepo using the `uv` dependency manager with workspace support.
+
+**✅ Use `uv` exclusively**
+
+- All Python dependencies **must be installed, synchronized, and locked** using `uv`.
+- Never use `pip`, `pip-tools`, or `poetry` directly for dependency management.
+- This is a **workspace monorepo** with multiple packages - follow workspace-specific commands.
+
+**🏢 Workspace Structure**
+
+This monorepo contains:
+- **Root workspace**: `birdwatch-agent-core` (shared dependencies)
+- **Agent packages**: Individual packages in `agents/` directory
+- **Shared packages**: Common utilities in `shared/`, `database_tools/`
+- **Single lock file**: `uv.lock` at root manages all dependencies
+
+**🔁 Workspace-Level Commands**
+
+Use these commands from the **root directory**:
+
+```bash
+# Install/sync all workspace dependencies
+uv sync
+
+# Add dependency to workspace root (shared by all packages)
+uv add <package>
+
+# Remove dependency from workspace root
+uv remove <package>
+
+# Run commands in workspace context
+uv run <command>
+```
+
+**🔁 Package-Level Commands**
+
+For individual packages (e.g., `agents/test-agent/`):
+
+```bash
+# Add dependency to specific package
+uv add <package> --package <package-name>
+# Example: uv add requests --package test-agent
+
+# Remove dependency from specific package
+uv remove <package> --package <package-name>
+
+# Work within a specific package directory
+cd agents/test-agent
+uv add <package>  # Adds to current package's pyproject.toml
+```
+
+**🔁 Adding New Packages**
+
+To add a new package to the workspace:
+
+1. Create the package directory structure
+2. Add `pyproject.toml` with basic package metadata
+3. Update root `pyproject.toml` workspace members:
+   ```toml
+   [tool.uv.workspace]
+   members = [
+       "agents/test-agent",
+       "agents/customer-service", 
+       "agents/data-explorer",
+       "agents/compose-message",
+       "agents/triage-agent",
+       "agents/new-agent",  # Add new package here
+   ]
+   ```
+4. Run `uv sync` to update workspace
+
+**🔁 Scripts**
+
+```bash
+# Run script with proper dependencies
+uv run script.py
+
+# Run script from specific package context
+uv run --package <package-name> script.py
+```
+
+You can edit inline-metadata manually:
+
+```python
+# /// script
+# requires-python = ">=3.12"
+# dependencies = [
+#     "torch",
+#     "torchvision",
+#     "opencv-python",
+#     "numpy",
+#     "matplotlib",
+#     "Pillow",
+#     "timm",
+# ]
+# ///
+
+print("some python code")
+```
+
+Or using uv cli:
+
+```bash
+# Add or upgrade script dependencies
+uv add package-name --script script.py
+
+# Remove script dependencies
+uv remove package-name --script script.py
+
+# Reinstall all script dependencies from lock file
+uv sync --script script.py
+```
+
+**📦 Dependency Strategy**
+
+- **Workspace root**: Common dependencies shared by all packages (FastAPI, Pydantic, etc.)
+- **Package-specific**: Dependencies unique to individual agents
+- **Version consistency**: Workspace ensures consistent versions across packages
+- **Development dependencies**: Add to workspace root for tooling (pytest, ruff, etc.)
+
+**🚀 Best Practices**
+
+1. **Always run `uv sync` after**:
+   - Pulling changes from git
+   - Adding/removing dependencies
+   - Switching branches
+
+2. **Dependency placement**:
+   - Core/shared dependencies → workspace root
+   - Agent-specific dependencies → individual package
+   - Development tools → workspace root `[project.optional-dependencies]`
+
+3. **Version management**:
+   - Single `uv.lock` file manages all versions
+   - Conflicts resolved automatically by uv
+   - Pin versions for production stability
+
+4. **Package structure**:
+   - Each package has its own `pyproject.toml`
+   - Packages can depend on other workspace packages
+   - Use relative imports between workspace packages
